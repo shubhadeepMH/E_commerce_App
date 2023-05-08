@@ -22,11 +22,9 @@ export default function Navbar() {
 
     }
     const redirectTocheckout=()=>{
-       if(isAuthenticated){
+       
         navigate('/check-out')
-       }else{
-        alert('Sign in first');
-       }
+      
     }
 
     return (
