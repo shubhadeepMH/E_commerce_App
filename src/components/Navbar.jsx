@@ -1,30 +1,56 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../assets/social.png'
 import { BsSearch } from 'react-icons/bs';
 import { BsCart3 } from 'react-icons/bs';
-import { useAuth0 } from "@auth0/auth0-react";
 import DropdownMenu from './DropdownMenu';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-export default function Navbar() {
-    let navigate=useNavigate();
-    
+import app from '../firebase'
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 
-    const cartData=useSelector((state)=>{
+export default function Navbar() {
+    const [user,setUser]=useState(null)
+
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+    let navigate = useNavigate();
+
+
+
+    const cartData = useSelector((state) => {
         return state.basket;
     })
-    //Auth0 modules for authentication
-    const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
+    //Firebase modules for authentication
+
 
     const handleAuth = () => {
-        // Authentication checking
-        !isAuthenticated && loginWithRedirect();
+        signInWithPopup(auth, provider)
+            .then((res) => {
+                console.log(res);
+            }).catch((err) => {
+                console.log(err);
+            })
 
     }
-    const redirectTocheckout=()=>{
+    //Get Signed in user data
+    useEffect(()=>{
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+               setUser(user);
+            }
+        });
+    })
+   
+
+
+    const redirectTocheckout = () => {
+        if(user){
+            navigate('/check-out')
+        }else{
+            alert('Please Sign in')
+        }
        
-        navigate('/check-out')
-      
+
     }
 
     return (
@@ -43,12 +69,12 @@ export default function Navbar() {
                 <div className=' text-white flex items-center space-x-3 text-sm m-2 '>
                     {/* Right Corner */}
                     <div onClick={handleAuth} className=' hover:underline cursor-pointer'>
-                        <p>{isAuthenticated ? `Hi ${user.name.slice(0, user.name.indexOf('@'),)}` : `Sign Up`}</p>
+                        <p>{user?`Hi ${user.displayName}`:`Sign Up`}</p>
                         <p >Account & Lists</p>
                     </div>
 
 
-                    <div onClick={()=>navigate('/orders')} className=' hover:underline cursor-pointer'>
+                    <div onClick={() => navigate('/orders')} className=' hover:underline cursor-pointer'>
                         <p>Returns</p>
                         <p>& Orders</p>
                     </div>
@@ -62,11 +88,11 @@ export default function Navbar() {
                 </div>
             </div>
             {/* Lower Navbar */}
-            <div className='bg-blue-950 px-2 text-sm text-white flex items-center space-x-3'>
-               
-                <DropdownMenu/>
+            <div className='bg-blue-950 px-2 text-xs text-white flex items-center space-x-3 md:text-lg'>
 
-                <p className='cursor-pointer hover:underline'>All</p>
+                <DropdownMenu />
+
+                <p onClick={()=>navigate('/')} className='cursor-pointer hover:underline'>Home</p>
                 <p className='cursor-pointer hover:underline'>Reels video</p>
                 <p className='cursor-pointer hover:underline'>Fashion Exclusive</p>
                 <p className='cursor-pointer hover:underline'>Today's Deal</p>
@@ -75,7 +101,7 @@ export default function Navbar() {
                 <p className='hidden cursor-pointer hover:underline lg:inline'>Kids</p>
                 <p className='hidden cursor-pointer hover:underline lg:inline'>Electronics</p>
                 <p className='hidden cursor-pointer hover:underline lg:inline'>Home Applyences</p>
-               
+
 
             </div>
         </div>

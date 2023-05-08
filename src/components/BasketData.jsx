@@ -18,7 +18,7 @@ export default function BasketData(props) {
                 <p className='text-xs'>{props.data.description.substring(0, 40)}</p>
             </div>
             
-            <button onClick={()=>handleRemoveFromBasket(props.data.id)} className=' h-9 rounded-md mt-[2.5rem] bg-gradient-to-r from-pink-500 to-blue-600 text-xs text-white font-bold hover:underline'>Remove from Basket</button>
+            <button onClick={()=>handleRemoveFromBasket(props.data.id)} className=' h-9 p-2  rounded-md mt-[2.5rem] bg-gradient-to-r from-pink-500 to-blue-600 text-xs text-white font-bold hover:underline'>Remove </button>
             
 
         </div>
