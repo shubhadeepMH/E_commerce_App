@@ -62,23 +62,23 @@ export default function Payment() {
                     <form className="bg-white p-6 rounded-lg shadow-md">
                         <div className="mb-4">
                             <label className="block text-gray-700 font-bold mb-2" for="name">Name:</label>
-                            <input className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="name" name="name" />
+                            <input required className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="name" name="name" />
                         </div>
 
                         <div className="mb-4">
                             <label className="block text-gray-700 font-bold mb-2" for="phone">Phone Number:</label>
-                            <input className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="tel" id="phone" name="phone" />
+                            <input required className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="tel" id="phone" name="phone" />
                         </div>
 
                         <div className="mb-4">
-                            <label className="block text-gray-700 font-bold mb-2" for="address">Address:</label>
+                            <label required className="block text-gray-700 font-bold mb-2" for="address">Address:</label>
                             <textarea className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="address" name="address"></textarea>
                         </div>
 
                         <div className="mb-4">
                             <label className="block text-gray-700 font-bold mb-2" for="payment">Payment Method:</label>
                             <div className="flex">
-                                <input className="mr-2 leading-tight" type="radio" id="creditcard" name="payment" value="creditcard" />
+                                <input defaultChecked className="mr-2 leading-tight" type="radio" id="creditcard" name="payment" value="creditcard" />
                                 <label className="text-gray-700 font-bold" for="creditcard">Credit Card</label>
 
                                 <input className="mx-2 leading-tight" type="radio" id="debitcard" name="payment" value="debitcard" />
