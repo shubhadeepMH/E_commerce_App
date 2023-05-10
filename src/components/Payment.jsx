@@ -1,31 +1,77 @@
-import React, { useState} from 'react'
+import React, {useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import check from '../assets/check.png'
 import ClipLoader from "react-spinners/ClipLoader";
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { collection, addDoc } from "firebase/firestore"; 
+import { getFirestore } from "firebase/firestore";
+import app from '../firebase';
+import { emptyBasket } from '../../store/slices/CartSlice';
+import { getAuth } from 'firebase/auth';
+
+
+
 
 const override = {
     display: "block",
     margin: "0 auto",
-  };
+};
 
 
 export default function Payment() {
     const [paymentDone, setPaymentDone] = useState(true)
     const [showOverlay, setShowOverlay] = useState(false);
     const [orderDone, setOrderDone] = useState(false);
-    const [userDetails,setUserDetails]=useState({
-        name:"",
-        phone:"",
-        address:"",
-        paymentMethod:""
+    let userId=null
+    const [userDetails, setUserDetails] = useState({
+        name: "",
+        phone: "",
+        address: "",
+        paymentMethod: ""
 
     })
-    let navigate=useNavigate()
+    let dispatch=useDispatch()
+
+    //Getting userId
+   useEffect(()=>{
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (user !== null) {
+        userId = user.uid;
+    }
+   })
+   
+    
+    let navigate = useNavigate()
+    const db = getFirestore(app);
     let [loading, setLoading] = useState(true);
-    // let [color, setColor] = useState("#ffffff");
-    const handleSubmit = (event) => {
+
+      //Getting basket data from react redux
+        let cartData = useSelector(state => {
+            return state.basket;
+        })
+        
+
+    
+    //Handle payment form submitting Request
+    const handleSubmit =(event) => {
         event.preventDefault();
+        cartData.map(async(item,index)=>{
+            try {
+                const docRef = await addDoc(collection(db, "orders"),{
+                    item,
+                    userId
+                });
+              } catch (e) {
+                console.error("Error adding document: ", e);
+              }
+              dispatch(emptyBasket())
+              
+        })
+      
+
         setShowOverlay(true)
         setTimeout(() => {
             setLoading(false)
@@ -33,12 +79,12 @@ export default function Payment() {
         }, 3000);
 
     }
-    
-    
-     
-  
-   
-   
+
+
+
+
+
+
 
     return (
         <div>
@@ -49,7 +95,7 @@ export default function Payment() {
                 {showOverlay && (
                     <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
                         <div className="bg-white rounded-lg p-10">
-                         {orderDone && <h2 className="text-lg font-bold mb-4">Order Confirmed</h2>}
+                            {orderDone && <h2 className="text-lg font-bold mb-4">Order Confirmed</h2>}
                             <ClipLoader
                                 color='blue'
                                 loading={loading}
@@ -59,7 +105,7 @@ export default function Payment() {
                                 data-testid="loader"
                             />
                             {orderDone && <img className='h-20 w-20 mx-auto' src={check} alt="" />}
-                            <button onClick={()=>navigate('/orders')} className=' mt-6 bg-green-500 font-bold rounded-md shadow-md p-2 focus:bg-green-300'>See your orders</button>
+                            <button onClick={() => navigate('/orders')} className=' mt-6 bg-green-500 font-bold rounded-md shadow-md p-2 focus:bg-green-300'>See your orders</button>
                         </div>
                     </div>
                 )}
@@ -79,7 +125,7 @@ export default function Payment() {
                         </div>
 
                         <div className="mb-4">
-                            <label  className="block text-gray-700 font-bold mb-2" for="address">Address:</label>
+                            <label className="block text-gray-700 font-bold mb-2" for="address">Address:</label>
                             <textarea required className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="address" name="address"></textarea>
                         </div>
 
@@ -98,7 +144,7 @@ export default function Payment() {
                         </div>
 
                         <div className="flex justify-center">
-                            <button  type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >Submit</button>
+                            <button type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >Submit</button>
                         </div>
                     </form>
                 </div>

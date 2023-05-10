@@ -14,8 +14,11 @@ const basketSlice = createSlice({
             const idToRemove = action.payload;
             return state.filter((item) => item.id !== idToRemove);
 
+        },
+        emptyBasket(state,action){
+            return []
         }
     }
 })
 export default basketSlice;
-export const { addToBasket, removeFromBasket } = basketSlice.actions;
+export const { addToBasket, removeFromBasket,emptyBasket } = basketSlice.actions;

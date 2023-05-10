@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AiOutlineMenu } from 'react-icons/ai';
-import { useAuth0 } from "@auth0/auth0-react";
 import { getAuth, signOut ,onAuthStateChanged} from "firebase/auth";
+
 
 function DropdownMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const { logout, isAuthenticated } = useAuth0();
+
   const auth = getAuth();
+  const navigate=useNavigate()
   const user=auth.currentUser;
   //FireBase SignOut functionality
 
@@ -17,6 +19,7 @@ function DropdownMenu() {
     }).catch((error) => {
       alert('An error happened')
     });
+    navigate('/')
     window.location.reload()
   }
  
