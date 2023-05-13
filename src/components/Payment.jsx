@@ -23,6 +23,7 @@ export default function Payment() {
     const [paymentDone, setPaymentDone] = useState(true)
     const [showOverlay, setShowOverlay] = useState(false);
     const [orderDone, setOrderDone] = useState(false);
+    const [availability,setAvailability]=useState(true)
     let userId=null
     const [userDetails, setUserDetails] = useState({
         name: "",
@@ -132,19 +133,20 @@ export default function Payment() {
                         <div className="mb-4">
                             <label className="block text-gray-700 font-bold mb-2" for="payment">Payment Method:</label>
                             <div className="flex">
-                                <input defaultChecked className="mr-2 leading-tight" type="radio" id="creditcard" name="payment" value="creditcard" />
+                                <input  className="mr-2 leading-tight" type="radio" id="creditcard" name="payment" value="creditcard" onChange={(e)=>setAvailability(false)}/>
                                 <label className="text-gray-700 font-bold" for="creditcard">Credit Card</label>
 
-                                <input className="mx-2 leading-tight" type="radio" id="debitcard" name="payment" value="debitcard" />
+                                <input className="mx-2 leading-tight" onChange={(e)=>setAvailability(false)}  type="radio" id="debitcard" name="payment" value="debitcard" />
                                 <label className="text-gray-700 font-bold" for="debitcard">Debit Card</label>
 
-                                <input className="mx-2 leading-tight" type="radio" id="paypal" name="payment" value="cod" />
+                                <input defaultChecked onChange={(e)=>setAvailability(true)}  className="mx-2 leading-tight" type="radio" id="paypal" name="payment" value="cod" />
                                 <label className="text-gray-700 font-bold" for="paypal">Cash On Delivery</label>
                             </div>
+                            {<p className={`text-red-500 font-serif font-bold text-center ${availability==true?'invisible':'visible'}`}>Feature Not Available Right Now</p>}
                         </div>
 
                         <div className="flex justify-center">
-                            <button type='submit' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >Submit</button>
+                           <button type='submit' className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${availability==false?'invisible':'visible'}`}>Submit</button>
                         </div>
                     </form>
                 </div>

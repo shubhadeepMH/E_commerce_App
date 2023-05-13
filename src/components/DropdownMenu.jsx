@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { getAuth, signOut ,onAuthStateChanged} from "firebase/auth";
@@ -22,11 +22,15 @@ function DropdownMenu() {
     navigate('/')
     window.location.reload()
   }
+  const handlelLogOutPopUp=()=>{
+    setIsOpen(!isOpen)
+  }
+ 
  
 
   return (
     <div className="relative">
-      <p className='cursor-pointer' onClick={() => setIsOpen(!isOpen)}><AiOutlineMenu className='scale-125' /></p>
+      <p className='cursor-pointer' onClick={handlelLogOutPopUp}><AiOutlineMenu className='scale-125' /></p>
 
       {isOpen && (
         <div className=' bg-white border absolute p-2  mt-2 w-[8rem] rounded-md shadow-lg '>
