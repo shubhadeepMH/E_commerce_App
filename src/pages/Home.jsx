@@ -52,12 +52,12 @@ export default function Home() {
                     })}
                        <img className='w-[15rem] md:col-span-3 md:w-auto lg:col-span-4' src="https://images.remotehub.com/d42c62669a7711eb91397e038280fee0/original_thumb/ec1eb042.jpg?version=1618112516" alt="" />
 
-                       {products.slice(5,6).map((item,index)=>{
+                       {products.slice(5,8).map((item,index)=>{
                         return  <Product className='' key={index} data={item}/>
                     })}
                     <img className='w-[15rem] sm:w-auto  md:col-span-2 lg:col-span-3' src="https://i.ytimg.com/vi/W868WkrOOog/maxresdefault.jpg" alt="" />
 
-                    {products.slice(7,products.length).map((item,index)=>{
+                    {products.slice(9,products.length).map((item,index)=>{
                         return  <Product className='' key={index} data={item}/>
                     })}                    
 

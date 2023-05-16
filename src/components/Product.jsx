@@ -17,7 +17,7 @@ export default function Product(props) {
                 <p className='text-yellow-600  p-2'>Price: {props.data.price} $</p>
                 <p className='p-2'>{props.data.description.substring(0,80)}...</p>
 
-                <button className=' relative bottom-1 focus:bg-slate-500 m-2 p-[.3rem] rounded bg-gradient-to-b from-pink-500 via-purple-500 to-blue-950 text-white font-bold' onClick={()=>addToCart(props.data)}>Add To Basket</button>
+                <button className=' relative bottom-1 m-2 p-[.3rem] rounded bg-blue-700 hover:bg-blue-500 focus:bg-blue-700 text-white font-bold' onClick={()=>addToCart(props.data)}>Add To Basket</button>
             </div>
 
         </>
